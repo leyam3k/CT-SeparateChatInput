@@ -1,0 +1,39 @@
+/*
+  This file contains the styles for the Focus Input Mode extension.
+*/
+
+/*
+  This placeholder still serves the same purpose: to reserve the
+  original, single-line space of the textarea in the button bar.
+*/
+.textarea-placeholder {
+    flex: 1;
+    order: 3;
+    visibility: hidden;
+}
+
+/*
+  NEW: This class is applied to the #send_textarea when it's moved.
+  Instead of absolute positioning, it uses the flexbox 'order' property
+  to position itself correctly within the #send_form container.
+*/
+#send_textarea.relocated-input-mode {
+    /* Behave as a full-width block within the #send_form flex container */
+    width: 100%;
+    
+    /* Use flexbox order to slot in between the QR bar (order: 1) and the main form (order: 25) */
+    order: 2;
+
+    /* Add some margin for visual separation */
+    margin: 5px 0;
+    
+    /* Give it a distinct look as its own section */
+    border: 1px solid var(--SmartThemeBorderColor);
+    border-radius: 8px;
+    background-color: var(--SmartThemeBlurTintColor);
+
+    /* Ensure the progress bar styling is not lost */
+    clip-path: none;
+    border-top: var(--progWidth) solid var(--progColor);
+    transition: clip-path 200ms, border-color 200ms;
+}
