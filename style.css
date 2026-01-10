@@ -1,39 +1,150 @@
 /*
-  This file contains the styles for the Focus Input Mode extension.
+  CT-SeparateChatInput
+  Separates the chat input into a dedicated row above the control buttons.
 */
 
-/*
-  This placeholder still serves the same purpose: to reserve the
-  original, single-line space of the textarea in the button bar.
+/* --- Main Layout --- */
+
+/* Enable wrapping on the form container */
+#send_form.ct-separate-chat-input {
+  flex-wrap: wrap !important;
+  align-content: center;
+  justify-content: center;
+}
+
+/* Force the textarea to take the full top row */
+#send_form.ct-separate-chat-input > #send_textarea {
+  flex-basis: 100% !important;
+  width: 100% !important;
+  max-width: 100% !important;
+
+  /* Ensure it is visually first */
+  order: -9999 !important;
+
+  /* Spacing between input and buttons */
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* --- Control Bar --- */
+
+/* The new container for all buttons */
+#ct-sci-control-bar {
+  display: flex;
+  flex-basis: 100%;
+  width: 100%;
+  justify-content: center; /* Center buttons by default */
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px; /* Spacing between buttons */
+  position: relative;
+
+  /* Ensure it sits below textarea */
+  order: 0;
+}
+
+/* Styles for buttons inside our bar */
+#ct-sci-control-bar > .interactable,
+#ct-sci-control-bar > .menu_button,
+#ct-sci-control-bar > div[tabindex] {
+  margin: 0 !important; /* Reset inherited margins */
+  position: relative;
+}
+
+/* 
+   Fixed Positioning Logic 
+   We want Options on far Left and Send on far Right.
+   We achieve this by making the control bar justify-content: space-between
+   BUT we also want the middle buttons centered.
+   
+   A trick is to use auto margins if we are in a flex container.
 */
-.textarea-placeholder {
-    flex: 1;
-    order: 3;
-    visibility: hidden;
+
+/* Fixed Left Button (Options) */
+#ct-sci-control-bar > #options_button.ct-sci-fixed-button {
+  margin-right: auto !important; /* Pushes everything else to the right */
+  order: -9999 !important;
+  /* Add little space on the corner */
+  margin-left: 5px !important;
+}
+
+/* Right Group (Send & Alternates) */
+#ct-sci-right-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: auto !important; /* Pushes itself to the far right */
+  margin-right: 5px !important;
+  order: 9999 !important;
+}
+
+#ct-sci-right-group > div {
+  /* Styles for buttons inside the right group (send, stop, etc) */
+  /* Ensure they are visible and sized correctly */
+  position: relative;
+  /* Reset margins for children */
+  margin: 0 !important;
+}
+
+/* Ensure font-awesome icons are centered and sized */
+#ct-sci-right-group .fa-solid,
+#ct-sci-right-group .fa-fw {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px; /* Standard button width */
+  height: 30px; /* Standard button height */
+}
+
+/* Fix for small icons and cursor interactivity */
+#extensionsMenuButton,
+#options_button,
+#send_but {
+  font-size: 1.1em; /* Make icon a bit bigger if needed */
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer; /* Ensure pointer cursor on hover */
+}
+
+/* Ensure all interactive buttons have pointer cursor and hover effects */
+#ct-sci-control-bar .interactable,
+#ct-sci-control-bar .menu_button,
+#ct-sci-control-bar .fa-solid,
+#ct-sci-right-group .fa-solid {
+  cursor: pointer;
+  transition: opacity 0.2s, color 0.2s, text-shadow 0.2s;
+  opacity: 0.7 !important;
+}
+
+#ct-sci-control-bar .interactable:hover,
+#ct-sci-control-bar .menu_button:hover,
+#ct-sci-control-bar .fa-solid:hover,
+#ct-sci-right-group .fa-solid:hover {
+  opacity: 1 !important;
+  text-shadow: 0 0 5px var(--SmartThemeBlurTintColor);
 }
 
 /*
-  NEW: This class is applied to the #send_textarea when it's moved.
-  Instead of absolute positioning, it uses the flexbox 'order' property
-  to position itself correctly within the #send_form container.
+   Hide script buttons by default.
+   ST normally manages their visibility via inline styles or parent-scoped CSS.
+   Since we moved them, we need to ensure they are hidden until ST explicitly shows them (via inline style).
 */
-#send_textarea.relocated-input-mode {
-    /* Behave as a full-width block within the #send_form flex container */
-    width: 100%;
-    
-    /* Use flexbox order to slot in between the QR bar (order: 1) and the main form (order: 25) */
-    order: 2;
+#ct-sci-right-group .stscript_btn {
+  display: none;
+}
 
-    /* Add some margin for visual separation */
-    margin: 5px 0;
-    
-    /* Give it a distinct look as its own section */
-    border: 1px solid var(--SmartThemeBorderColor);
-    border-radius: 8px;
-    background-color: var(--SmartThemeBlurTintColor);
+/* Dynamic Buttons (Middle) */
+#ct-sci-control-bar > .ct-sci-dynamic-button {
+  /* Default spacing */
+  margin: 0 5px !important;
+}
 
-    /* Ensure the progress bar styling is not lost */
-    clip-path: none;
-    border-top: var(--progWidth) solid var(--progColor);
-    transition: clip-path 200ms, border-color 200ms;
+/* Hide the original containers if they become empty to prevent layout shifts */
+#leftSendForm:empty,
+#rightSendForm:empty,
+#nonQRFormItems:empty {
+  display: none !important;
 }
