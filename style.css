@@ -41,6 +41,8 @@
 
   /* Ensure it sits below textarea */
   order: 0;
+
+  height: 35px; /* Fix for Quick Persona Overflow */
 }
 
 /* Styles for buttons inside our bar */
