@@ -39,6 +39,24 @@ Once installed, the layout changes are applied automatically.
 - Compatible with the latest version of SillyTavern.
 - Should work with most third-party extensions that add buttons to the chat form.
 
+## Changelog
+
+### v1.1.0
+
+- **New Feature: TopBar Hider**
+  - Added a floating toggle button (centered at the bottom) to hide/show the top navigation bar for a more immersive view.
+  - Added a placeholder in the control bar to reserve space for the floating button.
+  - The hidden state is temporary and resets to "visible" upon reloading the page.
+  - The button uses a high Z-Index to remain accessible even when full-screen drawers are open.
+
+### v1.0.0
+
+- **Initial Release**
+  - Separated chat input text area to its own row.
+  - Created a dedicated control bar for buttons.
+  - Implemented fixed positioning for "Options" (Left) and "Send" (Right) groups.
+  - Added a settings panel to customize the order of center-aligned buttons.
+
 ## License
 
 This project is licensed under the AGPLv3 License.

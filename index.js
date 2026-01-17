@@ -7,6 +7,7 @@ const extensionFolderPath = `scripts/extensions/third-party/${extensionName}`;
 // Default Settings
 const defaultSettings = {
   buttonOrder: {}, // Map of elementID -> order (number)
+  topBarHidden: false,
 };
 
 // Initialize Settings
@@ -39,6 +40,13 @@ jQuery(async () => {
   // 3. Setup Layout
   const $form = $("#send_form");
   const $textarea = $("#send_textarea");
+
+  // Ensure Placeholder exists for Hider Button
+  if ($("#ct-sci-placeholder").length === 0) {
+    $("#nonQRFormItems").append(
+      '<div id="ct-sci-placeholder" class="interactable" title="TopBar Hider Placeholder"></div>',
+    );
+  }
 
   if ($form.length === 0 || $textarea.length === 0) {
     console.error(`${extensionName}: Required elements not found.`);
@@ -201,7 +209,7 @@ jQuery(async () => {
 
     if ($buttons.length === 0) {
       $list.append(
-        '<div class="text-muted">No custom buttons detected yet.</div>'
+        '<div class="text-muted">No custom buttons detected yet.</div>',
       );
       return;
     }
@@ -237,6 +245,62 @@ jQuery(async () => {
 
   // Run relocation logic
   relocateButtons();
+
+  // --- Top Bar Hider Logic ---
+
+  /**
+   * Toggles a CSS class on the body to show/hide the top bar.
+   * @param {boolean} hidden - The desired hidden state.
+   */
+  function setHiddenState(hidden) {
+    if (hidden) {
+      $("body").addClass("st-top-bar-hidden");
+    } else {
+      $("body").removeClass("st-top-bar-hidden");
+    }
+  }
+
+  // Create the button and add it to the page.
+  // The ID 'topBarHiderButton' is kept for CSS styling consistency.
+  let $toggleButton = $("#topBarHiderButton");
+  if ($toggleButton.length === 0) {
+    $toggleButton = $('<button id="topBarHiderButton"></button>');
+    $("body").append($toggleButton);
+  }
+
+  /**
+   * Updates the button's icon and title based on the current state.
+   */
+  function updateButtonUI() {
+    const hidden = extension_settings[extensionName].topBarHidden;
+    if (hidden) {
+      $toggleButton.text("Show");
+      $toggleButton.attr("title", "Show Top Bar");
+      $toggleButton.html('<i class="fa-solid fa-eye"></i>'); // Use FontAwesome icon
+    } else {
+      $toggleButton.text("Hide");
+      $toggleButton.attr("title", "Hide Top Bar");
+      $toggleButton.html('<i class="fa-solid fa-eye-slash"></i>');
+    }
+  }
+
+  // --- Click Handler ---
+  // A simple click now toggles the top bar's visibility.
+  $toggleButton.off("click").on("click", function () {
+    const currentHidden = extension_settings[extensionName].topBarHidden;
+    const newHidden = !currentHidden;
+
+    extension_settings[extensionName].topBarHidden = newHidden;
+    setHiddenState(newHidden);
+    updateButtonUI();
+    // State is not saved to ensure it resets on reload
+  });
+
+  // --- Initial Setup for Top Bar Hider ---
+  // Always start unhidden on reload
+  extension_settings[extensionName].topBarHidden = false;
+  setHiddenState(false);
+  updateButtonUI();
 
   // Observer to handle late-loading extensions adding buttons
   const observer = new MutationObserver((mutations) => {

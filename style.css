@@ -24,6 +24,7 @@
   /* Spacing between input and buttons */
   margin-left: 0 !important;
   margin-right: 0 !important;
+  margin-bottom: 5px;
 }
 
 /* --- Control Bar --- */
@@ -36,7 +37,7 @@
   justify-content: center; /* Center buttons by default */
   align-items: center;
   flex-wrap: wrap;
-  gap: 15px; /* Spacing between buttons */
+  gap: 7px; /* Spacing between buttons */
   position: relative;
 
   /* Ensure it sits below textarea */
@@ -49,7 +50,7 @@
 #ct-sci-control-bar > .interactable,
 #ct-sci-control-bar > .menu_button,
 #ct-sci-control-bar > div[tabindex] {
-  margin: 0 !important; /* Reset inherited margins */
+  margin: 2px !important; /* Reset inherited margins */
   position: relative;
 }
 
@@ -117,7 +118,10 @@
 #ct-sci-control-bar .fa-solid,
 #ct-sci-right-group .fa-solid {
   cursor: pointer;
-  transition: opacity 0.2s, color 0.2s, text-shadow 0.2s;
+  transition:
+    opacity 0.2s,
+    color 0.2s,
+    text-shadow 0.2s;
   opacity: 0.7 !important;
 }
 
@@ -149,4 +153,72 @@
 #rightSendForm:empty,
 #nonQRFormItems:empty {
   display: none !important;
+}
+
+/* --- Top Bar Hider --- */
+
+/* The button itself */
+#topBarHiderButton {
+  position: fixed;
+  bottom: 8px; /* Stay at bottom */
+  left: 50.7%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(128, 128, 128, 0.5);
+  font-size: 1.1em;
+  cursor: pointer;
+  z-index: 2147483647; /* Max Z-Index to stay on top of everything */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s;
+  line-height: 30px;
+  opacity: 0.5;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+  backdrop-filter: blur(4px);
+}
+
+#ct-sci-placeholder {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  display: inline-block;
+  opacity: 0;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+#topBarHiderButton:hover {
+  opacity: 1;
+  background-color: rgba(128, 128, 128, 0.9);
+}
+
+/* Hiding Logic */
+body.st-top-bar-hidden {
+  --topBarBlockSize: 0px !important;
+}
+
+body.st-top-bar-hidden #top-bar,
+body.st-top-bar-hidden #top-settings-holder > *:not(#stcd--qrDrawer) {
+  display: none !important;
+}
+
+/* Hide drawer icon when hidden */
+body.st-top-bar-hidden
+  #stcd--qrDrawer:has(#stcd--drawer)
+  .stcd--hasPoster
+  .drawer-icon::before {
+  display: none !important;
+}
+
+@media screen and (max-width: 800px) {
+  #topBarHiderButton {
+    top: 865px;
+  }
 }
