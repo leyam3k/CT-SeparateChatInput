@@ -37,7 +37,7 @@
   justify-content: center; /* Center buttons by default */
   align-items: center;
   flex-wrap: wrap;
-  gap: 7px; /* Spacing between buttons */
+  gap: 0px; /* Spacing between buttons */
   position: relative;
 
   /* Ensure it sits below textarea */
@@ -110,6 +110,21 @@
   align-items: center;
   justify-content: center;
   cursor: pointer; /* Ensure pointer cursor on hover */
+}
+
+/* Ensure all dynamic buttons have consistent size */
+#ct-sci-control-bar > .ct-sci-dynamic-button {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#quickPersonaImg {
+    width: 90% !important;
+    height: 90% !important;
 }
 
 /* Ensure all interactive buttons have pointer cursor and hover effects */
