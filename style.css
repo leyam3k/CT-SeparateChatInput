@@ -198,6 +198,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 3px;
 
   color: white;
   backdrop-filter: blur(4px);
@@ -251,8 +252,8 @@ body.st-top-bar-hidden
   /* Ensure button stays visible on mobile */
   #topBarHiderButton {
     /* Slightly bigger for easier touch */
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     font-size: 1.2em;
   }
   
