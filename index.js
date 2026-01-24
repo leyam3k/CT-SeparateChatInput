@@ -283,21 +283,95 @@ jQuery(async () => {
       $toggleButton.html('<i class="fa-solid fa-eye-slash"></i>');
     }
   }
+  
+  /**
+   * Checks if the placeholder element is visible in the viewport
+   * @returns {boolean} True if placeholder is visible
+   */
+  function isPlaceholderVisible() {
+    const $placeholder = $("#ct-sci-placeholder");
+    if ($placeholder.length === 0) return false;
+    
+    const rect = $placeholder[0].getBoundingClientRect();
+    const viewportHeight = window.visualViewport
+      ? window.visualViewport.height
+      : window.innerHeight;
+    const viewportWidth = window.visualViewport
+      ? window.visualViewport.width
+      : window.innerWidth;
+    
+    // Check if element is within viewport bounds
+    return rect.top < viewportHeight &&
+           rect.bottom > 0 &&
+           rect.left < viewportWidth &&
+           rect.right > 0;
+  }
 
   /**
    * Updates the position of the TopBar Hider button to align with the placeholder.
    * This binds the external fixed button to the internal placeholder's position.
+   * Enhanced to handle virtual keyboard on mobile devices.
    */
+  let lastDocHeight = 0;
+  let lastViewportHeight = 0;
+  
   function updateToggleButtonPosition() {
     const $placeholder = $("#ct-sci-placeholder");
     if ($placeholder.length === 0 || $toggleButton.length === 0) return;
+    
+    // Check for document/viewport height changes (indicates keyboard state change)
+    const currentDocHeight = document.documentElement.scrollHeight;
+    const currentViewportHeight = window.visualViewport
+      ? window.visualViewport.height
+      : window.innerHeight;
+      
+    if (currentDocHeight !== lastDocHeight || currentViewportHeight !== lastViewportHeight) {
+      lastDocHeight = currentDocHeight;
+      lastViewportHeight = currentViewportHeight;
+      
+      // Schedule additional updates when dimensions change
+      schedulePositionUpdate(100);
+      schedulePositionUpdate(300);
+    }
+    
+    // Hide button if placeholder is not visible
+    if (!isPlaceholderVisible()) {
+      $toggleButton.css("display", "none");
+      return;
+    } else {
+      $toggleButton.css("display", "flex");
+    }
 
     const placeholderRect = $placeholder[0].getBoundingClientRect();
+    
+    // Use visualViewport if available (mobile devices with virtual keyboard)
+    // This provides accurate positioning when the keyboard is open
+    let offsetX = 0;
+    let offsetY = 0;
+    
+    if (window.visualViewport) {
+      // Visual viewport offsets help track the actual visible area
+      // when virtual keyboard or other overlays are present
+      offsetX = window.visualViewport.offsetLeft || 0;
+      offsetY = window.visualViewport.offsetTop || 0;
+    }
+
+    // Calculate position relative to the actual viewport
+    const leftPosition = placeholderRect.left + offsetX + placeholderRect.width / 2;
+    const topPosition = placeholderRect.top + offsetY + placeholderRect.height / 2;
+    
+    // Ensure the button stays within viewport bounds
+    const viewportWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+    const viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    
+    // Clamp position to viewport bounds with some padding
+    const clampedLeft = Math.min(Math.max(leftPosition, 25), viewportWidth - 25);
+    const clampedTop = Math.min(Math.max(topPosition, 25), viewportHeight - 25);
 
     // Position the toggle button to overlap exactly with the placeholder
     $toggleButton.css({
-      left: placeholderRect.left + placeholderRect.width / 2 + "px",
-      top: placeholderRect.top + placeholderRect.height / 2 + "px",
+      left: clampedLeft + "px",
+      top: clampedTop + "px",
       bottom: "auto", // Override the default bottom positioning
       transform: "translate(-50%, -50%)", // Center on the calculated point
     });
@@ -323,6 +397,8 @@ jQuery(async () => {
 
   // Debounced position update to avoid excessive calls during rapid changes
   let positionUpdateTimer = null;
+  let inputFocusChecker = null;
+  
   function schedulePositionUpdate(delay = 50) {
     if (positionUpdateTimer) {
       clearTimeout(positionUpdateTimer);
@@ -331,6 +407,27 @@ jQuery(async () => {
       positionUpdateTimer = null;
       updateToggleButtonPosition();
     }, delay);
+  }
+  
+  // Periodic checker when input is focused (for stubborn keyboard issues)
+  function startInputFocusChecker() {
+    stopInputFocusChecker();
+    inputFocusChecker = setInterval(() => {
+      // Check if any input is still focused
+      if ($(document.activeElement).is("input, textarea")) {
+        updateToggleButtonPosition();
+      } else {
+        // No input focused, stop checking
+        stopInputFocusChecker();
+      }
+    }, 500); // Check every 500ms
+  }
+  
+  function stopInputFocusChecker() {
+    if (inputFocusChecker) {
+      clearInterval(inputFocusChecker);
+      inputFocusChecker = null;
+    }
   }
 
   // Initial position updates with staggered delays to handle late-loading extensions
@@ -350,6 +447,83 @@ jQuery(async () => {
 
   // Update position on scroll (in case of scrollable containers)
   $(window).on("scroll", () => schedulePositionUpdate(16));
+  
+  // Visual Viewport API support for mobile devices with virtual keyboards
+  // This is crucial for handling virtual keyboard open/close events
+  if (window.visualViewport) {
+    // Viewport resize event fires when keyboard opens/closes
+    window.visualViewport.addEventListener("resize", () => {
+      schedulePositionUpdate(16);
+    });
+    
+    // Viewport scroll event fires when the user pans/zooms
+    window.visualViewport.addEventListener("scroll", () => {
+      schedulePositionUpdate(16);
+    });
+  }
+  
+  // Additional mobile-specific event handlers
+  // These help with various mobile scenarios including keyboard changes
+  
+  // Focus/blur events on input elements can trigger keyboard show/hide
+  $(document).on("focus blur", "input, textarea", function(e) {
+    if (e.type === "focus") {
+      // Start periodic checker when input is focused
+      startInputFocusChecker();
+      
+      // Also schedule immediate updates
+      schedulePositionUpdate(50);   // Immediate update
+      schedulePositionUpdate(250);  // After keyboard animation
+      schedulePositionUpdate(500);  // Final position
+    } else if (e.type === "blur") {
+      // Stop periodic checker on blur
+      stopInputFocusChecker();
+      
+      // Force multiple updates to catch keyboard closing
+      requestAnimationFrame(() => {
+        updateToggleButtonPosition();
+      });
+      schedulePositionUpdate(100);
+      schedulePositionUpdate(300);
+      schedulePositionUpdate(500);
+      
+      // Extra aggressive update for stubborn cases
+      setTimeout(() => {
+        updateToggleButtonPosition();
+      }, 700);
+    }
+  });
+  
+  // Input event handler - fires when typing
+  $(document).on("input", "input, textarea", function() {
+    // Light update during typing
+    schedulePositionUpdate(100);
+  });
+  
+  // Click events outside inputs might indicate focus change
+  $(document).on("click touchstart", function(e) {
+    // If clicking outside of input elements, update position
+    if (!$(e.target).is("input, textarea")) {
+      schedulePositionUpdate(50);
+    }
+  });
+  
+  // Orientation change on mobile devices
+  $(window).on("orientationchange", function() {
+    // Longer delay for orientation animations
+    schedulePositionUpdate(500);
+  });
+  
+  // Touch events that might affect viewport
+  let touchMoveTimer = null;
+  $(document).on("touchmove touchend", function() {
+    // Debounce touch events to avoid excessive updates
+    if (touchMoveTimer) clearTimeout(touchMoveTimer);
+    touchMoveTimer = setTimeout(() => {
+      updateToggleButtonPosition();
+      touchMoveTimer = null;
+    }, 100);
+  });
 
   // Use ResizeObserver to detect layout changes in the control bar
   const resizeObserver = new ResizeObserver(() => {
@@ -368,6 +542,27 @@ jQuery(async () => {
   const $placeholder = $("#ct-sci-placeholder");
   if ($placeholder.length > 0) {
     resizeObserver.observe($placeholder[0]);
+    
+    // Add Intersection Observer for better visibility tracking
+    if ('IntersectionObserver' in window) {
+      const intersectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Placeholder is visible, update position
+            updateToggleButtonPosition();
+          } else {
+            // Placeholder is not visible, hide button
+            $toggleButton.css("display", "none");
+          }
+        });
+      }, {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1 // Trigger when at least 10% visible
+      });
+      
+      intersectionObserver.observe($placeholder[0]);
+    }
   }
 
   // Observer to handle late-loading extensions adding buttons

@@ -41,6 +41,17 @@ Once installed, the layout changes are applied automatically.
 
 ## Changelog
 
+### v1.1.2
+
+- **Fixed: Mobile Virtual Keyboard Issues**
+  - Enhanced TopBar Hider button positioning on mobile devices with virtual keyboards.
+  - Added Visual Viewport API support for accurate positioning when keyboard is open.
+  - Button now hides when placeholder is scrolled out of view (e.g., when keyboard pushes content up).
+  - Added event listeners for focus/blur, orientation changes, and touch events.
+  - Improved boundary checking to keep button within viewport limits.
+  - Added mobile-specific CSS optimizations for better touch interaction.
+  - Fixed button misalignment issues when typing with virtual keyboard on mobile.
+
 ### v1.1.1
 
 - **Improved: TopBar Hider Button Positioning**

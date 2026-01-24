@@ -189,7 +189,8 @@
   transition:
     opacity 0.3s,
     background-color 0.3s,
-    box-shadow 0.3s;
+    box-shadow 0.3s,
+    display 0.2s;
   /* Note: We exclude left/top from transition to avoid laggy position updates */
   line-height: 25px;
   opacity: 0.5;
@@ -197,10 +198,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: -1px;
 
   color: white;
   backdrop-filter: blur(4px);
+  
+  /* Prevent selection and touch delays on mobile */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
 }
 
 /* Placeholder - acts as the position anchor for the floating button */
@@ -212,6 +219,8 @@
   opacity: 0;
   pointer-events: none;
   flex-shrink: 0;
+  /* Ensure it maintains its space even when keyboard shows */
+  position: relative;
 }
 
 #topBarHiderButton:hover {
@@ -235,4 +244,39 @@ body.st-top-bar-hidden
   .stcd--hasPoster
   .drawer-icon::before {
   display: none !important;
+}
+
+/* --- Mobile-specific adjustments --- */
+@media (max-width: 768px), (orientation: portrait) {
+  /* Ensure button stays visible on mobile */
+  #topBarHiderButton {
+    /* Slightly bigger for easier touch */
+    width: 30px;
+    height: 30px;
+    font-size: 1.2em;
+  }
+  
+  /* Control bar adjustments for mobile keyboards */
+  #ct-sci-control-bar {
+    /* Ensure control bar stays visible when keyboard opens */
+    position: relative;
+    z-index: 1000;
+  }
+  
+  /* Prevent viewport shifts when keyboard opens */
+  #send_form.ct-separate-chat-input {
+    /* Keep form structure stable */
+    min-height: auto;
+  }
+}
+
+/* Handle virtual keyboard specifically */
+@supports (height: 100vh) and (height: 100dvh) {
+  /* Use dynamic viewport height for better keyboard handling */
+  @media (max-width: 768px) {
+    #send_form.ct-separate-chat-input {
+      /* Use dynamic viewport units if supported */
+      max-height: calc(100dvh - var(--topBarBlockSize, 0px));
+    }
+  }
 }
