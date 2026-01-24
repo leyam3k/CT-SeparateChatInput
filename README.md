@@ -41,6 +41,17 @@ Once installed, the layout changes are applied automatically.
 
 ## Changelog
 
+### v1.1.1
+
+- **Improved: TopBar Hider Button Positioning**
+  - The floating TopBar Hider button now dynamically binds its position to the internal placeholder element.
+  - Removed hardcoded CSS positioning (left: 50.7%, bottom: 8px) in favor of JavaScript-based dynamic positioning.
+  - Added ResizeObserver to track layout changes and update button position automatically.
+  - Added debounced position updates on window resize and scroll events.
+  - Added staggered initial position updates (100ms, 300ms, 500ms, 1000ms) to handle late-loading extensions.
+  - Button position now correctly updates when other extensions add/remove buttons from the control bar.
+  - Eliminated the need for manual CSS adjustments or media query workarounds.
+
 ### v1.1.0
 
 - **New Feature: TopBar Hider**

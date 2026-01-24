@@ -284,6 +284,25 @@ jQuery(async () => {
     }
   }
 
+  /**
+   * Updates the position of the TopBar Hider button to align with the placeholder.
+   * This binds the external fixed button to the internal placeholder's position.
+   */
+  function updateToggleButtonPosition() {
+    const $placeholder = $("#ct-sci-placeholder");
+    if ($placeholder.length === 0 || $toggleButton.length === 0) return;
+
+    const placeholderRect = $placeholder[0].getBoundingClientRect();
+
+    // Position the toggle button to overlap exactly with the placeholder
+    $toggleButton.css({
+      left: placeholderRect.left + placeholderRect.width / 2 + "px",
+      top: placeholderRect.top + placeholderRect.height / 2 + "px",
+      bottom: "auto", // Override the default bottom positioning
+      transform: "translate(-50%, -50%)", // Center on the calculated point
+    });
+  }
+
   // --- Click Handler ---
   // A simple click now toggles the top bar's visibility.
   $toggleButton.off("click").on("click", function () {
@@ -302,6 +321,55 @@ jQuery(async () => {
   setHiddenState(false);
   updateButtonUI();
 
+  // Debounced position update to avoid excessive calls during rapid changes
+  let positionUpdateTimer = null;
+  function schedulePositionUpdate(delay = 50) {
+    if (positionUpdateTimer) {
+      clearTimeout(positionUpdateTimer);
+    }
+    positionUpdateTimer = setTimeout(() => {
+      positionUpdateTimer = null;
+      updateToggleButtonPosition();
+    }, delay);
+  }
+
+  // Initial position updates with staggered delays to handle late-loading extensions
+  // This ensures the button position is correct even after other extensions finish loading
+  requestAnimationFrame(() => {
+    updateToggleButtonPosition();
+  });
+
+  // Additional delayed updates to catch late-loading buttons
+  setTimeout(() => updateToggleButtonPosition(), 100);
+  setTimeout(() => updateToggleButtonPosition(), 300);
+  setTimeout(() => updateToggleButtonPosition(), 500);
+  setTimeout(() => updateToggleButtonPosition(), 1000);
+
+  // Update position on window resize
+  $(window).on("resize", () => schedulePositionUpdate(16)); // ~60fps throttle
+
+  // Update position on scroll (in case of scrollable containers)
+  $(window).on("scroll", () => schedulePositionUpdate(16));
+
+  // Use ResizeObserver to detect layout changes in the control bar
+  const resizeObserver = new ResizeObserver(() => {
+    schedulePositionUpdate();
+  });
+
+  // Observe the control bar and form for size changes
+  if ($controlBar.length > 0) {
+    resizeObserver.observe($controlBar[0]);
+  }
+  if ($form.length > 0) {
+    resizeObserver.observe($form[0]);
+  }
+
+  // Also observe the placeholder itself
+  const $placeholder = $("#ct-sci-placeholder");
+  if ($placeholder.length > 0) {
+    resizeObserver.observe($placeholder[0]);
+  }
+
   // Observer to handle late-loading extensions adding buttons
   const observer = new MutationObserver((mutations) => {
     let needsRelocation = false;
@@ -313,6 +381,8 @@ jQuery(async () => {
     }
     if (needsRelocation) {
       relocateButtons();
+      // Update toggle button position after relocation with slight delay
+      schedulePositionUpdate(100);
     }
   });
 
@@ -324,6 +394,11 @@ jQuery(async () => {
   // Also observe the main form sheld just in case
   const sheld = document.getElementById("form_sheld");
   if (sheld) observer.observe(sheld, { childList: true }); // Shallow check for direct appends
+
+  // Observe the control bar itself for any DOM changes
+  if ($controlBar.length > 0) {
+    observer.observe($controlBar[0], { childList: true, subtree: true });
+  }
 
   // Open listener for the settings drawer to refresh list when opened
   $(".inline-drawer-toggle").on("click", function () {

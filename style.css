@@ -157,14 +157,13 @@
 
 /* --- Top Bar Hider --- */
 
-/* The button itself */
+/* The button itself - position is dynamically set by JS to align with placeholder */
 #topBarHiderButton {
   position: fixed;
-  bottom: 8px; /* Stay at bottom */
-  left: 50.7%;
-  transform: translateX(-50%);
-  width: 30px;
-  height: 30px;
+  /* Position properties (left, top, bottom, transform) are set dynamically by JavaScript
+     to bind with #ct-sci-placeholder position. No hardcoded values needed. */
+  width: 25px;
+  height: 25px;
   border: none;
   border-radius: 50%;
   background-color: rgba(128, 128, 128, 0.5);
@@ -172,18 +171,24 @@
   cursor: pointer;
   z-index: 2147483647; /* Max Z-Index to stay on top of everything */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s;
-  line-height: 30px;
+  transition:
+    opacity 0.3s,
+    background-color 0.3s,
+    box-shadow 0.3s;
+  /* Note: We exclude left/top from transition to avoid laggy position updates */
+  line-height: 25px;
   opacity: 0.5;
 
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: -1px;
 
   color: white;
   backdrop-filter: blur(4px);
 }
 
+/* Placeholder - acts as the position anchor for the floating button */
 #ct-sci-placeholder {
   width: 30px;
   height: 30px;
@@ -215,10 +220,4 @@ body.st-top-bar-hidden
   .stcd--hasPoster
   .drawer-icon::before {
   display: none !important;
-}
-
-@media screen and (max-width: 800px) {
-  #topBarHiderButton {
-    top: 865px;
-  }
 }
