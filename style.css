@@ -173,20 +173,6 @@
   transform: translateY(-1px) !important;
 }
 
-/* Active/pressed state - even darker when pressed */
-#ct-sci-control-bar > .interactable:active,
-#ct-sci-control-bar > .menu_button:active,
-#ct-sci-control-bar > div[tabindex]:active,
-#ct-sci-right-group #send_but:active,
-#ct-sci-right-group #mes_stop:active,
-#ct-sci-right-group #mes_impersonate:active,
-#ct-sci-right-group #mes_continue:active,
-#ct-sci-right-group .stscript_btn:active {
-  transform: translateY(0) !important;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
-  background-color: var(--SmartThemeBodyColor, rgba(35, 35, 35, 0.95)) !important;
-}
-
 /* Focus state for accessibility */
 #ct-sci-control-bar > .interactable:focus,
 #ct-sci-control-bar > .menu_button:focus,
