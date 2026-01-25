@@ -46,18 +46,10 @@
   height: 35px; /* Fix for Quick Persona Overflow */
 }
 
-/* Universal Square Box Button Design */
+/* Universal Square Box Button Design - Control Bar Buttons */
 #ct-sci-control-bar > .interactable:not([style*="display: none"]),
 #ct-sci-control-bar > .menu_button:not([style*="display: none"]),
-#ct-sci-control-bar > div[tabindex]:not([style*="display: none"]),
-#ct-sci-right-group #send_but,
-#ct-sci-right-group #mes_stop[style*="display: flex"],
-#ct-sci-right-group #mes_stop[style*="display: block"],
-#ct-sci-right-group #mes_impersonate:not([style*="display: none"]),
-#ct-sci-right-group #mes_continue:not([style*="display: none"]),
-#ct-sci-right-group .stscript_btn[style*="display: flex"],
-#ct-sci-right-group .stscript_btn[style*="display: block"],
-#ct-sci-right-group .stscript_btn[style*="display: inline-block"] {
+#ct-sci-control-bar > div[tabindex]:not([style*="display: none"]) {
   /* Square box design */
   width: 32px !important;
   height: 32px !important;
@@ -82,6 +74,50 @@
   /* Visual enhancements */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
   transition: all 0.2s ease !important;
+}
+
+/* Right Group buttons - DO NOT force display, let ST control visibility */
+#ct-sci-right-group #send_but,
+#ct-sci-right-group #mes_stop,
+#ct-sci-right-group #mes_impersonate,
+#ct-sci-right-group #mes_continue,
+#ct-sci-right-group .stscript_btn {
+  /* Square box design */
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  
+  /* Box styling - INVERTED: darker normal state */
+  border: 1px solid var(--SmartThemeQuoteColor, rgba(255, 255, 255, 0.3)) !important;
+  border-radius: 4px !important;
+  background-color: var(--SmartThemeBlurTintColor, rgba(50, 50, 50, 0.9)) !important;
+  
+  /* Spacing and layout */
+  margin: 2px 1px !important;
+  padding: 0 !important;
+  position: relative !important;
+  
+  /* Content centering using text alignment for non-flex elements */
+  text-align: center !important;
+  line-height: 32px !important;
+  
+  /* Visual enhancements */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Ensure icons inside right group buttons are centered using absolute positioning */
+#ct-sci-right-group #send_but > i,
+#ct-sci-right-group #mes_stop > i,
+#ct-sci-right-group #mes_impersonate > i,
+#ct-sci-right-group #mes_continue > i,
+#ct-sci-right-group .stscript_btn > i {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  line-height: 1 !important;
 }
 
 /*
