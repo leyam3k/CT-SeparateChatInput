@@ -41,6 +41,21 @@ Once installed, the layout changes are applied automatically.
 
 ## Changelog
 
+### v1.1.3
+
+- **New: Universal Square Box Button Design**
+  - Implemented consistent square box design for all control buttons for better visual distinction.
+  - All buttons now feature a uniform 32x32px size with 4px rounded corners.
+  - Added visible borders to clearly define button boundaries without relying solely on spacing.
+  - **Inverted Color Scheme:** Darker background in normal state for better visibility, lighter on hover for clear interaction feedback.
+  - Added smooth transitions, shadow effects, and transform animations for improved user experience.
+  - **Fixed Button Visibility Issues:**
+    - Script execution buttons (Continue, Pause, Stop) now properly hide when not in use.
+    - Abort Request button only displays when actively stopping a request.
+    - Conditional buttons (Impersonate, Continue) respect their display states.
+  - Improved accessibility with focus states and consistent hover/active effects.
+  - Special handling for Quick Persona images to fit within the new box design.
+
 ### v1.1.2
 
 - **Fixed: Mobile Virtual Keyboard Issues**

@@ -46,12 +46,42 @@
   height: 35px; /* Fix for Quick Persona Overflow */
 }
 
-/* Styles for buttons inside our bar */
-#ct-sci-control-bar > .interactable,
-#ct-sci-control-bar > .menu_button,
-#ct-sci-control-bar > div[tabindex] {
-  margin: 2px !important; /* Reset inherited margins */
+/* Universal Square Box Button Design */
+#ct-sci-control-bar > .interactable:not([style*="display: none"]),
+#ct-sci-control-bar > .menu_button:not([style*="display: none"]),
+#ct-sci-control-bar > div[tabindex]:not([style*="display: none"]),
+#ct-sci-right-group #send_but,
+#ct-sci-right-group #mes_stop[style*="display: flex"],
+#ct-sci-right-group #mes_stop[style*="display: block"],
+#ct-sci-right-group #mes_impersonate:not([style*="display: none"]),
+#ct-sci-right-group #mes_continue:not([style*="display: none"]),
+#ct-sci-right-group .stscript_btn[style*="display: flex"],
+#ct-sci-right-group .stscript_btn[style*="display: block"],
+#ct-sci-right-group .stscript_btn[style*="display: inline-block"] {
+  /* Square box design */
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  
+  /* Box styling - INVERTED: darker normal state */
+  border: 1px solid var(--SmartThemeQuoteColor, rgba(255, 255, 255, 0.3)) !important;
+  border-radius: 4px !important;
+  background-color: var(--SmartThemeBlurTintColor, rgba(50, 50, 50, 0.9)) !important;
+  
+  /* Spacing and layout */
+  margin: 2px 3px !important;
+  padding: 0 !important;
   position: relative;
+  
+  /* Content centering */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  
+  /* Visual enhancements */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+  transition: all 0.2s ease !important;
 }
 
 /* 
@@ -81,71 +111,101 @@
   order: 9999 !important;
 }
 
-#ct-sci-right-group > div {
-  /* Styles for buttons inside the right group (send, stop, etc) */
-  /* Ensure they are visible and sized correctly */
-  position: relative;
-  /* Reset margins for children */
-  margin: 0 !important;
-}
-
-/* Ensure font-awesome icons are centered and sized */
+/* Icon styling within buttons */
+#ct-sci-control-bar .fa-solid,
+#ct-sci-control-bar .fa-fw,
+#ct-sci-control-bar .fa-regular,
 #ct-sci-right-group .fa-solid,
-#ct-sci-right-group .fa-fw {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px; /* Standard button width */
-  height: 30px; /* Standard button height */
+#ct-sci-right-group .fa-fw,
+#ct-sci-right-group .fa-regular {
+  font-size: 16px !important;
+  line-height: 1 !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
 }
 
-/* Fix for small icons and cursor interactivity */
+/* Special styling for specific buttons */
 #extensionsMenuButton,
 #options_button,
 #send_but {
-  font-size: 1.1em; /* Make icon a bit bigger if needed */
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer; /* Ensure pointer cursor on hover */
-}
-
-/* Ensure all dynamic buttons have consistent size */
-#ct-sci-control-bar > .ct-sci-dynamic-button {
-  width: 30px;
-  height: 30px;
-  min-width: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#quickPersonaImg {
-    width: 90% !important;
-    height: 90% !important;
-}
-
-/* Ensure all interactive buttons have pointer cursor and hover effects */
-#ct-sci-control-bar .interactable,
-#ct-sci-control-bar .menu_button,
-#ct-sci-control-bar .fa-solid,
-#ct-sci-right-group .fa-solid {
+  font-size: 16px !important;
   cursor: pointer;
-  transition:
-    opacity 0.2s,
-    color 0.2s,
-    text-shadow 0.2s;
-  opacity: 0.7 !important;
 }
 
-#ct-sci-control-bar .interactable:hover,
-#ct-sci-control-bar .menu_button:hover,
-#ct-sci-control-bar .fa-solid:hover,
-#ct-sci-right-group .fa-solid:hover {
+/* Dynamic button consistency */
+#ct-sci-control-bar > .ct-sci-dynamic-button {
+  /* Inherits from universal button style above */
+}
+
+/* Quick Persona Image Button */
+#quickPersonaImg {
+    width: 24px !important;
+    height: 24px !important;
+    border-radius: 2px !important;
+    object-fit: cover !important;
+}
+
+/* Universal hover and interaction effects */
+#ct-sci-control-bar > .interactable,
+#ct-sci-control-bar > .menu_button,
+#ct-sci-control-bar > div[tabindex],
+#ct-sci-right-group #send_but,
+#ct-sci-right-group #mes_stop[style*="display: flex"],
+#ct-sci-right-group #mes_stop[style*="display: block"],
+#ct-sci-right-group #mes_impersonate:not([style*="display: none"]),
+#ct-sci-right-group #mes_continue:not([style*="display: none"]),
+#ct-sci-right-group .stscript_btn[style*="display: flex"],
+#ct-sci-right-group .stscript_btn[style*="display: block"] {
+  cursor: pointer !important;
+  opacity: 0.85 !important;
+}
+
+/* Hover state for square box buttons - INVERTED: brighter on hover */
+#ct-sci-control-bar > .interactable:hover,
+#ct-sci-control-bar > .menu_button:hover,
+#ct-sci-control-bar > div[tabindex]:hover,
+#ct-sci-right-group #send_but:hover,
+#ct-sci-right-group #mes_stop:hover,
+#ct-sci-right-group #mes_impersonate:hover,
+#ct-sci-right-group #mes_continue:hover,
+#ct-sci-right-group .stscript_btn:hover {
   opacity: 1 !important;
-  text-shadow: 0 0 5px var(--SmartThemeBlurTintColor);
+  border-color: var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.2)) !important;
+  background-color: var(--SmartThemeBodyColor, rgba(60, 60, 60, 0.8)) !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Active/pressed state - even darker when pressed */
+#ct-sci-control-bar > .interactable:active,
+#ct-sci-control-bar > .menu_button:active,
+#ct-sci-control-bar > div[tabindex]:active,
+#ct-sci-right-group #send_but:active,
+#ct-sci-right-group #mes_stop:active,
+#ct-sci-right-group #mes_impersonate:active,
+#ct-sci-right-group #mes_continue:active,
+#ct-sci-right-group .stscript_btn:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+  background-color: var(--SmartThemeBodyColor, rgba(35, 35, 35, 0.95)) !important;
+}
+
+/* Focus state for accessibility */
+#ct-sci-control-bar > .interactable:focus,
+#ct-sci-control-bar > .menu_button:focus,
+#ct-sci-control-bar > div[tabindex]:focus,
+#ct-sci-right-group #send_but:focus,
+#ct-sci-right-group #mes_stop:focus,
+#ct-sci-right-group #mes_impersonate:focus,
+#ct-sci-right-group #mes_continue:focus,
+#ct-sci-right-group .stscript_btn:focus {
+  outline: 2px solid var(--SmartThemeQuoteColor, rgba(100, 150, 255, 0.5)) !important;
+  outline-offset: 1px !important;
 }
 
 /*
@@ -157,10 +217,27 @@
   display: none;
 }
 
-/* Dynamic Buttons (Middle) */
-#ct-sci-control-bar > .ct-sci-dynamic-button {
-  /* Default spacing */
-  margin: 0 5px !important;
+/* Disabled state for buttons */
+#ct-sci-control-bar > .interactable:disabled,
+#ct-sci-control-bar > .menu_button:disabled,
+#ct-sci-control-bar > div[tabindex]:disabled,
+#ct-sci-right-group > div:disabled,
+#ct-sci-control-bar > .interactable.disabled,
+#ct-sci-control-bar > .menu_button.disabled,
+#ct-sci-control-bar > div[tabindex].disabled,
+#ct-sci-right-group > div.disabled {
+  opacity: 0.4 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+
+/* Special cases for buttons that need to stay hidden */
+#ct-sci-control-bar > .hidden,
+#ct-sci-right-group > .hidden,
+#ct-sci-control-bar > [style*="display: none"],
+#ct-sci-right-group > [style*="display: none"],
+#ct-sci-right-group [style*="display: none"] {
+  display: none !important;
 }
 
 /* Hide the original containers if they become empty to prevent layout shifts */
