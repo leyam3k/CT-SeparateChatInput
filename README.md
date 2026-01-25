@@ -55,6 +55,10 @@ Once installed, the layout changes are applied automatically.
     - Conditional buttons (Impersonate, Continue) respect their display states.
   - Improved accessibility with focus states and consistent hover/active effects.
   - Special handling for Quick Persona images to fit within the new box design.
+- **Changed: Button Alignment**
+  - Dynamic buttons now align from left to right instead of being centered.
+  - Options button remains fixed on the far left, Send button group on the far right.
+  - Dynamic buttons flow naturally left-to-right between the fixed positions.
 
 ### v1.1.2
 

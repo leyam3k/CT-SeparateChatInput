@@ -34,7 +34,7 @@
   display: flex;
   flex-basis: 100%;
   width: 100%;
-  justify-content: center; /* Center buttons by default */
+  justify-content: flex-start; /* Align buttons from left to right */
   align-items: center;
   flex-wrap: wrap;
   gap: 0px; /* Spacing between buttons */
@@ -70,7 +70,7 @@
   background-color: var(--SmartThemeBlurTintColor, rgba(50, 50, 50, 0.9)) !important;
   
   /* Spacing and layout */
-  margin: 2px 3px !important;
+  margin: 2px 1px !important;
   padding: 0 !important;
   position: relative;
   
@@ -84,21 +84,18 @@
   transition: all 0.2s ease !important;
 }
 
-/* 
-   Fixed Positioning Logic 
-   We want Options on far Left and Send on far Right.
-   We achieve this by making the control bar justify-content: space-between
-   BUT we also want the middle buttons centered.
-   
-   A trick is to use auto margins if we are in a flex container.
+/*
+   Fixed Positioning Logic
+   Options button stays on the far left (order: -9999).
+   Dynamic buttons flow left-to-right after Options.
+   Right group (Send & alternates) is pushed to far right via margin-left: auto.
 */
 
 /* Fixed Left Button (Options) */
 #ct-sci-control-bar > #options_button.ct-sci-fixed-button {
-  margin-right: auto !important; /* Pushes everything else to the right */
   order: -9999 !important;
-  /* Add little space on the corner */
-  margin-left: 5px !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
 
 /* Right Group (Send & Alternates) */
@@ -107,7 +104,7 @@
   align-items: center;
   justify-content: flex-end;
   margin-left: auto !important; /* Pushes itself to the far right */
-  margin-right: 5px !important;
+  margin-right: 0 !important;
   order: 9999 !important;
 }
 
@@ -135,11 +132,6 @@
 #send_but {
   font-size: 16px !important;
   cursor: pointer;
-}
-
-/* Dynamic button consistency */
-#ct-sci-control-bar > .ct-sci-dynamic-button {
-  /* Inherits from universal button style above */
 }
 
 /* Quick Persona Image Button */
@@ -176,7 +168,7 @@
 #ct-sci-right-group .stscript_btn:hover {
   opacity: 1 !important;
   border-color: var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.2)) !important;
-  background-color: var(--SmartThemeBodyColor, rgba(60, 60, 60, 0.8)) !important;
+  background-color: rgba(158, 127, 208, 0.8) !important;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4) !important;
   transform: translateY(-1px) !important;
 }
@@ -303,7 +295,7 @@
 
 #topBarHiderButton:hover {
   opacity: 1;
-  background-color: rgba(128, 128, 128, 0.9);
+  background-color: rgba(158, 127, 208, 0.9);
 }
 
 /* Hiding Logic */
