@@ -78,6 +78,7 @@
 
 /* Right Group buttons - DO NOT force display, let ST control visibility */
 #ct-sci-right-group #send_but,
+#ct-sci-right-group #ct-send-instruction-button,
 #ct-sci-right-group #mes_stop,
 #ct-sci-right-group #mes_impersonate,
 #ct-sci-right-group #mes_continue,
@@ -109,6 +110,7 @@
 
 /* Ensure icons inside right group buttons are centered using absolute positioning */
 #ct-sci-right-group #send_but > i,
+#ct-sci-right-group #ct-send-instruction-button > i,
 #ct-sci-right-group #mes_stop > i,
 #ct-sci-right-group #mes_impersonate > i,
 #ct-sci-right-group #mes_continue > i,
@@ -183,6 +185,7 @@
 #ct-sci-control-bar > .menu_button,
 #ct-sci-control-bar > div[tabindex],
 #ct-sci-right-group #send_but,
+#ct-sci-right-group #ct-send-instruction-button,
 #ct-sci-right-group #mes_stop[style*="display: flex"],
 #ct-sci-right-group #mes_stop[style*="display: block"],
 #ct-sci-right-group #mes_impersonate:not([style*="display: none"]),
@@ -198,6 +201,7 @@
 #ct-sci-control-bar > .menu_button:hover,
 #ct-sci-control-bar > div[tabindex]:hover,
 #ct-sci-right-group #send_but:hover,
+#ct-sci-right-group #ct-send-instruction-button:hover,
 #ct-sci-right-group #mes_stop:hover,
 #ct-sci-right-group #mes_impersonate:hover,
 #ct-sci-right-group #mes_continue:hover,
@@ -213,6 +217,7 @@
 #ct-sci-control-bar > .menu_button:focus,
 #ct-sci-control-bar > div[tabindex]:focus,
 #ct-sci-right-group #send_but:focus,
+#ct-sci-right-group #ct-send-instruction-button:focus,
 #ct-sci-right-group #mes_stop:focus,
 #ct-sci-right-group #mes_impersonate:focus,
 #ct-sci-right-group #mes_continue:focus,

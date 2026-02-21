@@ -91,6 +91,7 @@ jQuery(async () => {
     // List of buttons that belong in the Right Group (Send area)
     const rightGroupIds = [
       "send_but",
+      "ct-send-instruction-button", // CT-SendAsInstruction extension button
       "mes_stop",
       "mes_impersonate",
       "mes_continue",

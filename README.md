@@ -41,6 +41,14 @@ Once installed, the layout changes are applied automatically.
 
 ## Changelog
 
+### v1.1.4
+
+- **New: CT-SendAsInstruction Compatibility**
+  - Added explicit support for CT-SendAsInstruction extension button (`ct-send-instruction-button`).
+  - Instruction button automatically placed in right group alongside Send button.
+  - Applied consistent square box styling (32x32px) to instruction button.
+  - Added proper hover, focus, and icon centering styles for instruction button.
+
 ### v1.1.3
 
 - **New: Universal Square Box Button Design**
