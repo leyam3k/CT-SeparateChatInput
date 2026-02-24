@@ -51,9 +51,9 @@
 #ct-sci-control-bar > .menu_button:not([style*="display: none"]),
 #ct-sci-control-bar > div[tabindex]:not([style*="display: none"]) {
   /* Square box design */
-  width: 32px !important;
+  width: 30px !important;
   height: 32px !important;
-  min-width: 32px !important;
+  min-width: 30px !important;
   min-height: 32px !important;
   
   /* Box styling - INVERTED: darker normal state */
@@ -84,9 +84,9 @@
 #ct-sci-right-group #mes_continue,
 #ct-sci-right-group .stscript_btn {
   /* Square box design */
-  width: 32px !important;
+  width: 30px !important;
   height: 32px !important;
-  min-width: 32px !important;
+  min-width: 30px !important;
   min-height: 32px !important;
   
   /* Box styling - INVERTED: darker normal state */
