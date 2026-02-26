@@ -6,9 +6,10 @@ A SillyTavern/CozyTavern extension that separates the chat input area from the c
 
 - **Dedicated Input Row:** Moves the chat textarea to its own row above the controls, ensuring full width for typing.
 - **Organized Control Bar:**
-  - **Fixed Positions:** Keeps the "Options" menu on the far left and the "Send" button (including Stop, Impersonate, Continue, etc.) on the far right.
-  - **Centered Controls:** Dynamically gathers other buttons (like Extensions, or buttons added by other extensions) and centers them in the middle.
-- **Customizable Order:** Includes a settings panel to reorder the centered buttons to your preference.
+  - **Fixed Right Position:** Keeps the "Send" button (including Stop, Impersonate, Continue, etc.) on the far right.
+  - **Dynamic Controls:** Automatically gathers buttons added by extensions and arranges them left-to-right.
+  - **Note:** Options and Extensions menu buttons are now handled by CT-SidebarButtons extension.
+- **Customizable Order:** Includes a settings panel to reorder the dynamic buttons to your preference.
 - **Mobile Friendly:** Designed to work seamlessly on smaller screens.
 
 ## Installation
@@ -28,7 +29,7 @@ Once installed, the layout changes are applied automatically.
 
 1.  Open the **Extensions** menu.
 2.  Find the **Separate Chat Input** settings drawer.
-3.  You will see a list of detected buttons (excluding the fixed Options and Send buttons).
+3.  You will see a list of detected buttons (excluding the Send button group).
 4.  Change the "Order" number for any button.
     - **Lower numbers** move the button to the **left**.
     - **Higher numbers** move the button to the **right**.
@@ -40,6 +41,14 @@ Once installed, the layout changes are applied automatically.
 - Should work with most third-party extensions that add buttons to the chat form.
 
 ## Changelog
+
+### v1.2.0
+
+- **Changed: Options Button to CT-SidebarButtons Integration**
+  - Removed handling of `options_button` and `extensionsMenuButton` as they are now managed by CT-SidebarButtons extension.
+  - Updated control bar layout to work without the Options button on the left.
+  - Dynamic buttons now flow naturally from left-to-right with Send button group remaining on the far right.
+  - Added detection to skip buttons that are already inside CT-SidebarButtons containers.
 
 ### v1.1.4
 

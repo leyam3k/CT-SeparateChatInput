@@ -86,7 +86,8 @@ jQuery(async () => {
     }
 
     // 2. Identify and Move Fixed/Grouped Buttons
-    const $optionsBtn = $("#options_button");
+    // Note: options_button and extensionsMenuButton are now handled by CT-SidebarButtons
+    // and should not be moved to this control bar
 
     // List of buttons that belong in the Right Group (Send area)
     const rightGroupIds = [
@@ -99,11 +100,6 @@ jQuery(async () => {
       "stscript_pause",
       "stscript_stop",
     ];
-
-    // Move Options Button (Left)
-    if ($optionsBtn.parent().attr("id") !== "ct-sci-control-bar") {
-      $controlBar.append($optionsBtn);
-    }
 
     // Move Right Group Buttons
     rightGroupIds.forEach((btnId) => {
@@ -118,13 +114,12 @@ jQuery(async () => {
 
     // 3. Identify and Move Dynamic Buttons
     // We look for interactable elements in the original containers or loosely attached to form
-    // Exclude the fixed buttons we just moved, and specific functional divs like nonQRFormItems if they are empty
+    // Exclude buttons that are handled by CT-SidebarButtons or other extensions
 
     // Common containers in default ST
     const searchSelectors = [
       "#leftSendForm > .interactable",
       "#rightSendForm > .interactable",
-      "#extensionsMenuButton", // Often outside or specific
       "#form_sheld .menu_button", // Sometimes extensions drop here
     ];
 
@@ -135,10 +130,13 @@ jQuery(async () => {
 
       // Skip invalid or already processed
       if (!id) return;
-      if (id === "options_button") return; // Handled separately
+      // Skip buttons handled by CT-SidebarButtons
+      if (id === "options_button" || id === "extensionsMenuButton") return;
       if (rightGroupIds.includes(id)) return; // Handled separately
       if (id === "send_textarea") return;
       if ($el.parent().attr("id") === "ct-sci-control-bar") return; // Already moved
+      // Skip buttons inside CT-SidebarButtons
+      if ($el.closest('.ct-sidebar-button').length) return;
 
       // Skip unwanted specific buttons
       const unwantedIds = [
@@ -182,10 +180,8 @@ jQuery(async () => {
       .find(".interactable")
       .each((i, el) => processButton(el));
 
-    // Re-apply styles/orders for fixed buttons
-    $optionsBtn.css("order", -9999); // Always Left
+    // Re-apply styles/orders for right group
     $rightGroup.css("order", 9999); // Always Right
-    $optionsBtn.addClass("ct-sci-fixed-button");
     $rightGroup.addClass("ct-sci-right-group");
 
     // Update Settings UI List
@@ -203,10 +199,11 @@ jQuery(async () => {
     const settings = extension_settings[extensionName];
     const buttonOrder = settings.buttonOrder;
 
-    // Find all buttons currently in the bar to list them (excluding fixed groups)
+    // Find all buttons currently in the bar to list them (excluding right group)
+    // Note: options_button and extensionsMenuButton are now in CT-SidebarButtons
     const $buttons = $controlBar
       .children()
-      .not("#options_button, #ct-sci-right-group");
+      .not("#ct-sci-right-group");
 
     if ($buttons.length === 0) {
       $list.append(

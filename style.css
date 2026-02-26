@@ -124,17 +124,10 @@
 
 /*
    Fixed Positioning Logic
-   Options button stays on the far left (order: -9999).
-   Dynamic buttons flow left-to-right after Options.
+   Note: options_button and extensionsMenuButton are now handled by CT-SidebarButtons.
+   Dynamic buttons flow left-to-right from the start.
    Right group (Send & alternates) is pushed to far right via margin-left: auto.
 */
-
-/* Fixed Left Button (Options) */
-#ct-sci-control-bar > #options_button.ct-sci-fixed-button {
-  order: -9999 !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-}
 
 /* Right Group (Send & Alternates) */
 #ct-sci-right-group {
@@ -165,8 +158,6 @@
 }
 
 /* Special styling for specific buttons */
-#extensionsMenuButton,
-#options_button,
 #send_but {
   font-size: 16px !important;
   cursor: pointer;
